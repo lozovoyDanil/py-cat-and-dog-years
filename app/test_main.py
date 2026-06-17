@@ -43,7 +43,29 @@ def test_negative_ages(cat_age: int, dog_age: int, expected: list) -> None:
     (20, None),
     ([15], 20),
     (20, [15]),
+    ({"years": 20}, 15)
 ])
 def test_invalid_input_types(cat_age: int, dog_age: int) -> None:
     with pytest.raises(TypeError):
         get_human_age(cat_age, dog_age)
+
+
+@pytest.mark.parametrize("cat_age,expected_cat", [
+    (24, 2), (25, 2), (26, 2), (27, 2),
+    (28, 3),
+    (31, 3),
+    (32, 4),
+])
+def test_cat_threshold_changes(cat_age: int, expected_cat: int) -> None:
+    print(get_human_age(cat_age, 0))
+    assert get_human_age(cat_age, 0)[0] == expected_cat
+
+
+@pytest.mark.parametrize("dog_age,expected_dog", [
+    (24, 2), (25, 2), (28, 2),
+    (29, 3),
+    (33, 3),
+    (34, 4),
+])
+def test_dog_threshold_changes(dog_age: int, expected_dog: int) -> None:
+    assert get_human_age(0, dog_age)[1] == expected_dog
